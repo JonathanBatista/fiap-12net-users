@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2020
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekBurger.Users", "GeekBurger.Users\GeekBurger.Users.csproj", "{6EC584FC-0A77-42EC-B808-E46B77CF33AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekBurger.Users.Contract", "GeekBurger.Users.Contract\GeekBurger.Users.Contract.csproj", "{8139D61F-4E18-44E8-996B-F85F0CB986EC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6EC584FC-0A77-42EC-B808-E46B77CF33AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EC584FC-0A77-42EC-B808-E46B77CF33AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EC584FC-0A77-42EC-B808-E46B77CF33AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EC584FC-0A77-42EC-B808-E46B77CF33AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8139D61F-4E18-44E8-996B-F85F0CB986EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8139D61F-4E18-44E8-996B-F85F0CB986EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8139D61F-4E18-44E8-996B-F85F0CB986EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8139D61F-4E18-44E8-996B-F85F0CB986EC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7B22807A-6081-4C6C-A412-230F7A2C8773}
+	EndGlobalSection
+EndGlobal
