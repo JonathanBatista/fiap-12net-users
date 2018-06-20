@@ -11,13 +11,19 @@ namespace GeekBurger.Users.Controllers
     [Route("api/Users")]
     public class UsersController : Controller
     {
-        [HttpGet("{userId}")]
+        [HttpPost]
         [ProducesResponseType(200)]
-        [ProducesResponseType(204)]
         [ProducesResponseType(500)]
-        public IActionResult Get(int userId)
+        public IActionResult Post(int face)
         {
             return Ok();
         }
+
+        [HttpPost("foodRestrictions")]
+        public IActionResult Post()
+        {
+            return Ok();
+        }
+
     }
 }
