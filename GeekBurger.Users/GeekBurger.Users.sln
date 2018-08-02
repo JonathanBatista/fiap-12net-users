@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2020
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekBurger.Users", "GeekBurger.Users\GeekBurger.Users.csproj", "{6EC584FC-0A77-42EC-B808-E46B77CF33AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeekBurger.Users", "GeekBurger.Users\GeekBurger.Users.csproj", "{6EC584FC-0A77-42EC-B808-E46B77CF33AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekBurger.Users.Contract", "GeekBurger.Users.Contract\GeekBurger.Users.Contract.csproj", "{8139D61F-4E18-44E8-996B-F85F0CB986EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeekBurger.Users.Contract", "GeekBurger.Users.Contract\GeekBurger.Users.Contract.csproj", "{8139D61F-4E18-44E8-996B-F85F0CB986EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekBurger.Users.Core", "GeekBurger.Users.Core\GeekBurger.Users.Core.csproj", "{AE31FAEA-9FE9-486D-BD59-0F1A006CEA09}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekBurger.Users.Application", "GeekBurger.Users.Application\GeekBurger.Users.Application.csproj", "{51908326-E87E-4330-87E2-1876140AA43D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{8139D61F-4E18-44E8-996B-F85F0CB986EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8139D61F-4E18-44E8-996B-F85F0CB986EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8139D61F-4E18-44E8-996B-F85F0CB986EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE31FAEA-9FE9-486D-BD59-0F1A006CEA09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE31FAEA-9FE9-486D-BD59-0F1A006CEA09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE31FAEA-9FE9-486D-BD59-0F1A006CEA09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE31FAEA-9FE9-486D-BD59-0F1A006CEA09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51908326-E87E-4330-87E2-1876140AA43D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51908326-E87E-4330-87E2-1876140AA43D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51908326-E87E-4330-87E2-1876140AA43D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51908326-E87E-4330-87E2-1876140AA43D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

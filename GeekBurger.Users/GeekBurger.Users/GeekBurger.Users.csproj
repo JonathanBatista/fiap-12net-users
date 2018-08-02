@@ -10,7 +10,13 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GeekBurger.Users.Application\GeekBurger.Users.Application.csproj" />
+    <ProjectReference Include="..\GeekBurger.Users.Contract\GeekBurger.Users.Contract.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using GeekBurger.Users.Contract.Dtos.RequestDto;
+using GeekBurger.Users.Contract.Dtos.ResponseDto;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GeekBurger.Users.Controllers
@@ -12,15 +9,17 @@ namespace GeekBurger.Users.Controllers
     public class UsersController : Controller
     {
         [HttpPost]
-        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(UserProcessDto), 201)]
         [ProducesResponseType(500)]
-        public IActionResult Post(int face)
+        public IActionResult Post([FromBody] UserRequestDto request)
         {
             return Ok();
         }
 
         [HttpPost("foodRestrictions")]
-        public IActionResult Post()
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+        public IActionResult Post([FromBody] UserFoodRestrictionRequestDto request)
         {
             return Ok();
         }
