@@ -1,6 +1,6 @@
-﻿namespace GeekBurger.Users.Contract.Dtos.RequestDto
+﻿namespace GeekBurger.Users.Contract
 {
-    public class UserFoodRestrictionRequestDto
+    public class UserFoodRestriction
     {
         public string Restrictions { get; set; }
 

@@ -1,6 +1,6 @@
-﻿namespace GeekBurger.Users.Contract.Dtos.ResponseDto
-{
-    public class UserProcessDto
+﻿namespace GeekBurger.Users.Contract
+{ 
+    public class UserProcess
     {
         public string UserGuid { get; set; }
 

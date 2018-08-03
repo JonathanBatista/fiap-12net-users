@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Extensions\" />
+    <Folder Include="Mapping\Profiles\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

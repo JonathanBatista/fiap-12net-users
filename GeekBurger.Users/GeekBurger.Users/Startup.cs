@@ -1,9 +1,6 @@
-﻿using AutoMapper;
-using GeekBurger.Users.Contract.Mapping.Profiles;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
 
 namespace GeekBurger.Users
 {
@@ -18,7 +15,6 @@ namespace GeekBurger.Users
                                             .AddJsonFormatters()
                                             .AddCors();
 
-            services.AddAutoMapper(typeof(UserProcessProfile).GetTypeInfo().Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

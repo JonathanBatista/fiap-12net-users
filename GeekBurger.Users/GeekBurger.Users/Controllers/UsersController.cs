@@ -1,5 +1,4 @@
-﻿using GeekBurger.Users.Contract.Dtos.RequestDto;
-using GeekBurger.Users.Contract.Dtos.ResponseDto;
+﻿using GeekBurger.Users.Contract;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GeekBurger.Users.Controllers
@@ -9,9 +8,9 @@ namespace GeekBurger.Users.Controllers
     public class UsersController : Controller
     {
         [HttpPost]
-        [ProducesResponseType(typeof(UserProcessDto), 201)]
+        [ProducesResponseType(typeof(UserProcess), 201)]
         [ProducesResponseType(500)]
-        public IActionResult Post([FromBody] UserRequestDto request)
+        public IActionResult Post([FromBody] User request)
         {
             return Ok();
         }
@@ -19,7 +18,7 @@ namespace GeekBurger.Users.Controllers
         [HttpPost("foodRestrictions")]
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
-        public IActionResult Post([FromBody] UserFoodRestrictionRequestDto request)
+        public IActionResult Post([FromBody] UserFoodRestriction request)
         {
             return Ok();
         }
