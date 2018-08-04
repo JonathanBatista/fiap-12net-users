@@ -17,8 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GeekBurger.Data\GeekBurger.Users.Data.csproj" />
     <ProjectReference Include="..\GeekBurger.Users.Application\GeekBurger.Users.Application.csproj" />
     <ProjectReference Include="..\GeekBurger.Users.Contract\GeekBurger.Users.Contract.csproj" />
+    <ProjectReference Include="..\GeekBurger.Users.Core\GeekBurger.Users.Core.csproj" />
   </ItemGroup>
 
 </Project>
