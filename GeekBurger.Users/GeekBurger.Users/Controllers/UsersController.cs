@@ -10,7 +10,7 @@ namespace GeekBurger.Users.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(UserProcess), 201)]
         [ProducesResponseType(500)]
-        public IActionResult Post([FromBody] User request)
+        public IActionResult Post([FromBody] UserFace request)
         {
             return Ok();
         }

@@ -1,6 +1,6 @@
 ﻿namespace GeekBurger.Users.Contract
 {
-    public class User
+    public class UserFace
     {
         public string Face { get; set; }
     }

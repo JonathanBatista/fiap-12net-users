@@ -4,4 +4,14 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.Management.ServiceBus.Fluent" Version="1.13.0" />
+    <PackageReference Include="Microsoft.Azure.ServiceBus" Version="3.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GeekBurger.Users.Contract\GeekBurger.Users.Contract.csproj" />
+    <ProjectReference Include="..\GeekBurger.Users.Core\GeekBurger.Users.Core.csproj" />
+  </ItemGroup>
+
 </Project>
