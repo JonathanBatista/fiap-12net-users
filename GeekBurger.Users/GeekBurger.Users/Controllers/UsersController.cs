@@ -1,6 +1,7 @@
 ﻿using GeekBurger.Users.Contract;
 using GeekBurger.Users.Data;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace GeekBurger.Users.Controllers
 {
@@ -14,9 +15,17 @@ namespace GeekBurger.Users.Controllers
         [ProducesResponseType(500)]
         public IActionResult Post([FromBody] User request)
         {
+
             UserRepository repo = new UserRepository();
             var guid = repo.InsertFace(request.Face);
-            return Ok(new { Guid = guid });
+            try
+            {
+                var resposta = new UserProcess() { UserGuid = guid, Processing = true };
+                return Ok(resposta);
+            }catch(Exception)
+            {
+                return BadRequest();
+            }   
         }
 
         [HttpPost("foodRestrictions")]
@@ -27,7 +36,7 @@ namespace GeekBurger.Users.Controllers
             UserRepository repo = new UserRepository();
 
             var restriction = new Core.Domains.UserRestriction();
-            restriction.UserId = request.UserId;
+            restriction.User.AzureGuid = request.UserId;
             restriction.Ingredient = request.Restrictions;
             try
             {

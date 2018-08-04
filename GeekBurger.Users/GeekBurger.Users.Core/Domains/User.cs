@@ -7,6 +7,10 @@ namespace GeekBurger.Users.Core.Domains
     [Table("Users", Schema = "gbu")]
     public class User : DomainEntity
     {
+        public User()
+        {
+
+        }
         public User(string face)
         {
             FaceBase64 = face;

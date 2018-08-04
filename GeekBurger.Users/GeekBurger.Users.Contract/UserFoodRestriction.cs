@@ -6,7 +6,7 @@
 
         public string Other { get; set; }
 
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
         public int RequesterId { get; set; }
     }

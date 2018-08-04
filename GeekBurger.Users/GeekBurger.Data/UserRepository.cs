@@ -8,11 +8,12 @@ namespace GeekBurger.Users.Data
 
     public class UserRepository
     {
-        List<User> _usuarios;
+        static List<User> _usuarios;
 
         public UserRepository()
         {
-            _usuarios = new List<User>();
+            if (_usuarios == null)
+                _usuarios = new List<User>();
         }
         public string InsertFace(string face)
         {
@@ -56,9 +57,9 @@ namespace GeekBurger.Users.Data
 
         public void InserFoodRestriction(UserRestriction restrictions)
         {
-            if (_usuarios.Exists(user => user.Id == restrictions.UserId))
+            if (_usuarios.Exists(user => user.AzureGuid == restrictions.User.AzureGuid))
             {
-                var usuario = _usuarios.First(user => user.Id == restrictions.UserId);
+                var usuario = _usuarios.First(user => user.AzureGuid == restrictions.User.AzureGuid);
                 usuario.Restrictions.Add(restrictions);
             }
             else
