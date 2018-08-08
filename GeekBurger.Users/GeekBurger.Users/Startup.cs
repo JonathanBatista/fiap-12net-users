@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using GeekBurger.Users.Application.AzureServices;
+using GeekBurger.Users.Application.AzureServices.AzureConnections;
 using GeekBurger.Users.Application.AzureServices.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -21,6 +22,8 @@ namespace GeekBurger.Users
             services.AddAutoMapper();
 
             services.AddTransient<IFaceService, FaceService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddSingleton<IServiceBus, AzureServiceBus>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

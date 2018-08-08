@@ -27,12 +27,12 @@ namespace GeekBurger.Users.Data
                 {
                     var novo = new User(face);
                     _usuarios.Add(novo);
-                    return novo.AzureGuid;
+                    return novo.UserId.ToString();
                 }
                 else
                 {
                     var usuario = _usuarios.First(u => u.FaceBase64 == face);
-                    return usuario.AzureGuid;
+                    return usuario.UserId.ToString();
                 }
             }
 
@@ -57,15 +57,20 @@ namespace GeekBurger.Users.Data
 
         public void InserFoodRestriction(UserRestriction restrictions)
         {
-            if (_usuarios.Exists(user => user.AzureGuid == restrictions.User.AzureGuid))
+            if (_usuarios.Exists(user => user.UserId == restrictions.User.UserId))
             {
-                var usuario = _usuarios.First(user => user.AzureGuid == restrictions.User.AzureGuid);
+                var usuario = _usuarios.First(user => user.UserId == restrictions.User.UserId);
                 usuario.Restrictions.Add(restrictions);
             }
             else
             {
                 throw new ArgumentException("usuário não existe");
             }
+        }
+
+        public void UpdateUser(User user)
+        {
+
         }
     }
 }

@@ -14,10 +14,12 @@ namespace GeekBurger.Users.Core.Domains
         public User(string face)
         {
             FaceBase64 = face;
-            AzureGuid = Guid.NewGuid().ToString();
+            UserId = Guid.NewGuid();
             Restrictions = new List<UserRestriction>();
         }
-        public string AzureGuid { get; set; }
+        public Guid UserId { get; set; }
+
+        public Guid PersistedId { get; set; }
 
         public string FaceBase64 { get; set; }
 

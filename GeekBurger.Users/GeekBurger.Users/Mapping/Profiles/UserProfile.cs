@@ -10,7 +10,7 @@ namespace GeekBurger.Users.Mapping.Profiles
         {
             CreateMap<User, UserProcess>()
                 .ForMember(dest => dest.Processing, opt => opt.MapFrom(src => src.InProcessing))
-                .ForMember(dest => dest.UserGuid, opt => opt.MapFrom(src => src.AzureGuid))
+                .ForMember(dest => dest.UserGuid, opt => opt.MapFrom(src => src.UserId))
                 .ReverseMap();
         }
     }

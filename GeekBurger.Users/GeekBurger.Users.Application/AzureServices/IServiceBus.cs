@@ -1,9 +1,10 @@
 ﻿using Microsoft.Azure.ServiceBus;
+using System.Threading.Tasks;
 
 namespace GeekBurger.Users.Application.AzureServices
 {
     public interface IServiceBus
     {
-        void SendMessageAsync(string topicName, Message message);
+        Task SendMessageAsync(string topicName, Message message);
     }
 }

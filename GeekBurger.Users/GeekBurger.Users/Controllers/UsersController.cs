@@ -46,7 +46,7 @@ namespace GeekBurger.Users.Controllers
             UserRepository repo = new UserRepository();
 
             var restriction = new Core.Domains.UserRestriction();
-            restriction.User.AzureGuid = request.UserId;
+            restriction.User.UserId = Guid.Parse(request.UserId);
             restriction.Ingredient = request.Restrictions;
             try
             {

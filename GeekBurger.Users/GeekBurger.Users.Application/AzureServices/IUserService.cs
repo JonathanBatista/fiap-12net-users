@@ -1,9 +1,10 @@
 ﻿using GeekBurger.Users.Core.Domains;
+using System.Threading.Tasks;
 
 namespace GeekBurger.Users.Application.AzureServices
 {
     public interface IUserService
     {
-        void UserRetrieved(User user);
+        Task UserRetrieved(User user);
     }
 }

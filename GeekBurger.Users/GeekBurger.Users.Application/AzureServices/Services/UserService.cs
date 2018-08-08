@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace GeekBurger.Users.Application.AzureServices.Services
 {
@@ -18,15 +19,15 @@ namespace GeekBurger.Users.Application.AzureServices.Services
             _serviceBus = serviceBus;
         }
 
-        public void UserRetrieved(User user)
+        public async Task UserRetrieved(User user)
         {
             var message = GetMessage(new UserRetrieved()
             {
                 AreRestrictionsSet = user.Restrictions.Any(),
-                UserId = user.AzureGuid
+                UserId = user.UserId.ToString()
             });
 
-            _serviceBus.SendMessageAsync(ConfigurationManager.Configuration["appSettings:sbUserRetrived"], message);
+            await _serviceBus.SendMessageAsync(ConfigurationManager.Configuration["appSettings:sbUserRetrived"], message);
         }
 
         private Message GetMessage(UserRetrieved userRetrieved)
