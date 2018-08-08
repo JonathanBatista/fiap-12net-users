@@ -15,15 +15,15 @@ namespace GeekBurger.Users.Core.Domains
         {
             FaceBase64 = face;
             AzureGuid = Guid.NewGuid().ToString();
-            Face = new byte[5000];
             Restrictions = new List<UserRestriction>();
         }
         public string AzureGuid { get; set; }
 
         public string FaceBase64 { get; set; }
 
-        [NotMapped]
-        public byte[] Face { get; set; }
+        public string GuidReference { get; set; }
+
+        public bool InProcessing { get; set; }
 
         [InverseProperty("User")]
         public List<UserRestriction> Restrictions { get; set; }

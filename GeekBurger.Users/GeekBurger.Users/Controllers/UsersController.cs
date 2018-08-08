@@ -1,7 +1,10 @@
-﻿using GeekBurger.Users.Contract;
+﻿using AutoMapper;
+using GeekBurger.Users.Application.AzureServices;
+using GeekBurger.Users.Contract;
 using GeekBurger.Users.Data;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Threading.Tasks;
 
 namespace GeekBurger.Users.Controllers
 {
@@ -9,20 +12,27 @@ namespace GeekBurger.Users.Controllers
     [Route("api/Users")]
     public class UsersController : Controller
     {
+        private readonly IFaceService _faceService;
+
+        public UsersController(IFaceService faceService)
+        {
+            _faceService = faceService;
+        }
         
         [HttpPost]
-        [ProducesResponseType(typeof(UserProcess), 201)]
-        [ProducesResponseType(500)]
-        public IActionResult Post([FromBody] UserFace request)
+        [ProducesResponseType(typeof(UserProcess), 200)]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> Post([FromBody] UserFace request)
         {
-
-            UserRepository repo = new UserRepository();
-            var guid = repo.InsertFace(request.Face);
             try
             {
-                var resposta = new UserProcess() { UserGuid = guid, Processing = true };
-                return Ok(resposta);
-            }catch(Exception)
+                var user = await _faceService.DetectFaceAsync(request.Face);
+
+                var response = Mapper.Map<UserProcess>(user);
+
+                return Ok(response);
+            }
+            catch (Exception)
             {
                 return BadRequest();
             }   

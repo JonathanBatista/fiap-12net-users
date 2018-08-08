@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Mapping\Profiles\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
