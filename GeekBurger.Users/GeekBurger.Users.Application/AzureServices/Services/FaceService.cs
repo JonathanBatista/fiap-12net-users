@@ -1,8 +1,8 @@
 ﻿using GeekBurger.Users.Core.Configs;
 using GeekBurger.Users.Core.Domains;
+using GeekBurger.Users.Data;
 using Microsoft.ProjectOxford.Face;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,16 +15,20 @@ namespace GeekBurger.Users.Application.AzureServices.Services
         private readonly string _faceListId;
         private readonly FaceServiceClient _faceServiceClient;
         private readonly IUserService _userService;
+        private readonly IUserRepository _userRepository;
         private List<User> _detectedUsers;
+        private List<User> _retryUpdateUsers;
+        private List<Task> _taskExceptions;
         private Task _lastTask;
 
 
-        public FaceService(IUserService userService)
+        public FaceService(IUserService userService, IUserRepository userRepository)
         {
             _faceListId = ConfigurationManager.Configuration["azureConfig:faceListId"];
             _faceServiceClient = new FaceServiceClient(ConfigurationManager.Configuration["azureConfig:key1"], ConfigurationManager.Configuration["azureConfig:endpoint"]);
             _detectedUsers = new List<User>();
             _userService = userService;
+            _userRepository = userRepository;
         }
 
         public async Task<User> DetectFaceAsync(string face)
@@ -44,12 +48,10 @@ namespace GeekBurger.Users.Application.AzureServices.Services
                     
                     user.UserId = detectedFace.FaceId;
                     user.InProcessing = true;
-
                     _detectedUsers.Add(user);
+                    _userRepository.InsertUser(user);
 
                     _lastTask = Task.Factory.StartNew(() => FindSimilarsAsync());
-
-                    //salvar usuário
                     
                     streamFace.Flush();
                     streamFace.Close();
@@ -101,17 +103,18 @@ namespace GeekBurger.Users.Application.AzureServices.Services
                     else
                         user.PersistedId = await AddUserToFaceListAsync(user.FaceBase64);
 
+                    var userRetrivedTask = HandleException(_userService.UserRetrieved(userRetrived));
 
-                    // update user
-
-
-                    await _userService.UserRetrieved(userRetrived);
-                    _detectedUsers.Remove(user);
+                    var updateTask = HandleException(_userRepository.UpdateUserAsync(user));
+                    if (!updateTask)
+                    {
+                        _detectedUsers.Remove(user);
+                    }
+                    
                 }
             }
         }
-
-
+        
         private async Task<bool> UpsertFaceListAndCheckIfContainsFaceAsync()
         {
             var faceLists = await _faceServiceClient.ListFaceListsAsync();
@@ -137,6 +140,16 @@ namespace GeekBurger.Users.Application.AzureServices.Services
             }
         }
 
+        private bool HandleException(Task currentTask)
+        {
+            if (!currentTask.IsCompletedSuccessfully && currentTask.Exception != null)
+            {
+                _taskExceptions.Add(currentTask);
+                return false;
+            }
+
+            return true;
+        }
 
 
         private User GetUserByPersistedId(Guid persistedGuid)

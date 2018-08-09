@@ -1,13 +1,16 @@
 ﻿using GeekBurger.Users.Core.Domains;
 using GeekBurger.Users.Data.Context;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace GeekBurger.Users.Data
 {
 
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
         static List<User> _usuarios;
 
@@ -38,8 +41,6 @@ namespace GeekBurger.Users.Data
                         var usuario = userDb.Users.First(u => u.FaceBase64 == face);
                         return usuario.UserId.ToString();
                     }
-
-                    
                 }
             }
 
@@ -80,9 +81,41 @@ namespace GeekBurger.Users.Data
             }
         }
 
-        public void UpdateUser(User user)
+        public async Task<bool> UpdateUserAsync(User user)
         {
+            using (var dbContext = new UsersContext())
+            {
+                var userDb = dbContext.Users.FirstOrDefault(x => x.UserId.ToString().Equals(user.UserId.ToString(), StringComparison.InvariantCultureIgnoreCase));
 
+                if (userDb == null)
+                    return false;
+
+                userDb.InProcessing = user.InProcessing;
+                userDb.PersistedId = user.PersistedId;
+                userDb.GuidReference = user.GuidReference;
+                userDb.UserId = user.UserId;
+
+                dbContext.Attach(userDb).State = EntityState.Modified;
+                await dbContext.SaveChangesAsync();
+            }
+            return true;
+        }
+
+        public async Task<User> GetUser(Expression<Func<User, bool>> expression)
+        {
+            using (var dbContext = new UsersContext())
+            {
+                return await dbContext.Users.FirstOrDefaultAsync(expression);
+            }
+        }
+
+        public void InsertUser(User newUser)
+        {
+            using (var dbContext = new UsersContext())
+            {
+                dbContext.Users.Add(newUser);
+                dbContext.SaveChanges();
+            }
         }
     }
 }

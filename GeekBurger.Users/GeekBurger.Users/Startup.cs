@@ -2,6 +2,7 @@
 using GeekBurger.Users.Application.AzureServices;
 using GeekBurger.Users.Application.AzureServices.AzureConnections;
 using GeekBurger.Users.Application.AzureServices.Services;
+using GeekBurger.Users.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +24,7 @@ namespace GeekBurger.Users
 
             services.AddTransient<IFaceService, FaceService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IUserRepository, UserRepository>();
             services.AddSingleton<IServiceBus, AzureServiceBus>();
         }
 

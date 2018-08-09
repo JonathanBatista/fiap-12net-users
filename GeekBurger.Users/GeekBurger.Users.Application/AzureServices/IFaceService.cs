@@ -6,9 +6,5 @@ namespace GeekBurger.Users.Application.AzureServices
     public interface IFaceService
     {
         Task<User> DetectFaceAsync(string face);
-
-        //findSimilars
-        
-        //armazenar dados
     }
 }
