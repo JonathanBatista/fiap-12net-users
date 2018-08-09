@@ -24,7 +24,7 @@ namespace GeekBurger.Data.Tests
 
             userService.UserRetrieved(new User
             {
-                UserId = Guid.NewGuid().ToString(),
+                UserId = Guid.NewGuid(),
                 Restrictions = new List<UserRestriction>
                 {
                     new UserRestriction

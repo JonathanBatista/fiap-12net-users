@@ -1,4 +1,5 @@
 ﻿using GeekBurger.Users.Core.Domains;
+using GeekBurger.Users.Data.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,28 +24,34 @@ namespace GeekBurger.Users.Data
             ///Goto do terceiro milenio
             string executaInsercao()
             {
-                if (!_usuarios.Exists(u => u.FaceBase64 == face))
+                using (var userDb = new UsersContext())
                 {
-                    var novo = new User(face);
-                    _usuarios.Add(novo);
-                    return novo.UserId.ToString();
-                }
-                else
-                {
-                    var usuario = _usuarios.First(u => u.FaceBase64 == face);
-                    return usuario.UserId.ToString();
+                    if (!userDb.Users.Any(u => u.FaceBase64 == face))
+                    {
+                        var novo = new User(face);
+                        userDb.Users.Add(novo);
+                        userDb.SaveChanges();
+                        return novo.UserId.ToString();
+                    }
+                    else
+                    {
+                        var usuario = userDb.Users.First(u => u.FaceBase64 == face);
+                        return usuario.UserId.ToString();
+                    }
+
+                    
                 }
             }
 
             try
             {
-                if (tries < 2)
+                if (tries > maxRetry)
                     throw new Exception();
 
                 var result = executaInsercao();
                 return result;
             }
-            catch
+            catch(Exception ex)
             {
                 if (tries >= maxRetry)
                     throw;
@@ -57,14 +64,19 @@ namespace GeekBurger.Users.Data
 
         public void InserFoodRestriction(UserRestriction restrictions)
         {
-            if (_usuarios.Exists(user => user.UserId == restrictions.User.UserId))
+
+            using (var userDb = new UsersContext())
             {
-                var usuario = _usuarios.First(user => user.UserId == restrictions.User.UserId);
-                usuario.Restrictions.Add(restrictions);
-            }
-            else
-            {
-                throw new ArgumentException("usuário não existe");
+                if (userDb.Users.Any(u => u.UserId == restrictions.User.UserId))
+                {
+                    var usuario = userDb.Users.First(user => user.UserId == restrictions.User.UserId);
+                    userDb.UserRestrictions.Add(restrictions);
+                    userDb.SaveChanges();
+                }
+                else
+                {
+                    throw new ArgumentException("usuário não existe");
+                }
             }
         }
 
