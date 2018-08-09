@@ -51,7 +51,7 @@ namespace GeekBurger.Users.Application.AzureServices.Services
                     _detectedUsers.Add(user);
                     _userRepository.InsertUser(user);
 
-                    _lastTask = Task.Factory.StartNew(() => FindSimilarsAsync());
+                    Task.Factory.StartNew(() => FindSimilarsAsync());
                     
                     streamFace.Flush();
                     streamFace.Close();
@@ -92,25 +92,23 @@ namespace GeekBurger.Users.Application.AzureServices.Services
 
                         var referenceFace = similarsFaces.FirstOrDefault(x => x.Confidence >= 0.5);
 
-                        if (referenceFace != null)
+                        if (referenceFace == null)
                             user.PersistedId = await AddUserToFaceListAsync(user.FaceBase64);
                         else
                         {
-                            userRetrived = GetUserByPersistedId(referenceFace.PersistedFaceId);
+                            userRetrived = await GetUserByPersistedId(referenceFace.PersistedFaceId);
                             user.GuidReference = userRetrived.UserId.ToString();
+                            user.Restrictions = userRetrived.Restrictions;
                         }
                     }
                     else
                         user.PersistedId = await AddUserToFaceListAsync(user.FaceBase64);
 
-                    var userRetrivedTask = HandleException(_userService.UserRetrieved(userRetrived));
+                    _lastTask = _userRepository.UpdateUserAsync(user);
+                    await _lastTask;
 
-                    var updateTask = HandleException(_userRepository.UpdateUserAsync(user));
-                    if (!updateTask)
-                    {
-                        _detectedUsers.Remove(user);
-                    }
-                    
+                    HandleException(_userService.UserRetrieved(userRetrived));
+                    _detectedUsers.Remove(user);
                 }
             }
         }
@@ -152,13 +150,9 @@ namespace GeekBurger.Users.Application.AzureServices.Services
         }
 
 
-        private User GetUserByPersistedId(Guid persistedGuid)
+        private async Task<User> GetUserByPersistedId(Guid persistedGuid)
         {
-            return new User
-            {
-                Restrictions = new List<UserRestriction>(),
-                UserId = Guid.NewGuid()
-            };
+            return await _userRepository.GetUser(x => x.PersistedId == persistedGuid);
         }
 
     }

@@ -13,10 +13,12 @@ namespace GeekBurger.Users.Controllers
     public class UsersController : Controller
     {
         private readonly IFaceService _faceService;
+        private readonly IMapper _mapper;
 
-        public UsersController(IFaceService faceService)
+        public UsersController(IFaceService faceService, IMapper mapper)
         {
             _faceService = faceService;
+            _mapper = mapper;
         }
         
         [HttpPost]
@@ -28,11 +30,11 @@ namespace GeekBurger.Users.Controllers
             {
                 var user = await _faceService.DetectFaceAsync(request.Face);
 
-                var response = Mapper.Map<UserProcess>(user);
+                var response = _mapper.Map<UserProcess>(user);
 
                 return Ok(response);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return BadRequest();
             }   

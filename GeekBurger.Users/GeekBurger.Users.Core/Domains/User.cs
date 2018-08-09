@@ -9,7 +9,7 @@ namespace GeekBurger.Users.Core.Domains
     {
         public User()
         {
-
+            Restrictions = new List<UserRestriction>();
         }
         public User(string face)
         {

@@ -38,7 +38,8 @@ namespace GeekBurger.Users.Application.AzureServices.Services
             return new Message
             {
                 MessageId = Guid.NewGuid().ToString(),
-                Body = userByteArray
+                Body = userByteArray,
+                Label = "Users"
             };
         }
     }

@@ -34,7 +34,7 @@ namespace GeekBurger.Users.Application.AzureServices.AzureConnections
 
             var serviceBusManager = ServiceBusManager.Authenticate(credentials, config.SubscriptionId);
 
-            //_serviceBusNamespace = serviceBusManager.Namespaces.GetByResourceGroup(config.ResourceGroup, config.NamespaceName);
+            _serviceBusNamespace = serviceBusManager.Namespaces.GetByResourceGroup(config.ResourceGroup, config.NamespaceName);
         }
 
         public async Task SendMessageAsync(string topicName, Message message)
