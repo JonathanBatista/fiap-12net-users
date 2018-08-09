@@ -17,7 +17,6 @@ namespace GeekBurger.Users.Application.AzureServices.Services
         private readonly IUserService _userService;
         private readonly IUserRepository _userRepository;
         private List<User> _detectedUsers;
-        private List<User> _retryUpdateUsers;
         private List<Task> _taskExceptions;
         private Task _lastTask;
 
@@ -29,6 +28,7 @@ namespace GeekBurger.Users.Application.AzureServices.Services
             _detectedUsers = new List<User>();
             _userService = userService;
             _userRepository = userRepository;
+            _taskExceptions = new List<Task>();
         }
 
         public async Task<User> DetectFaceAsync(string face)
