@@ -21,7 +21,7 @@ namespace GeekBurger.Data.Tests
         [Fact]
         public void ServiceBusTest()
         {
-            var userService = new UserService(new AzureServiceBus());
+            var userService = new UserService(new AzureServiceBus(), new UserRepository());
           
 
             var user =

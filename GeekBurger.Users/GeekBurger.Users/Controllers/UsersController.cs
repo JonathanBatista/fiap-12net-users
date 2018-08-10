@@ -15,11 +15,18 @@ namespace GeekBurger.Users.Controllers
         private readonly IFaceService _faceService;
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
-        public UsersController(IFaceService faceService, IMapper mapper, IUserService userService)
+        private readonly IServiceBus _serviceBus;
+
+        public UsersController(
+            IFaceService faceService, 
+            IMapper mapper, 
+            IUserService userService, 
+            IServiceBus serviceBus)
         {
             _faceService = faceService;
             _mapper = mapper;
             _userService = userService;
+            _serviceBus = serviceBus;
         }
         
         [HttpPost]
@@ -35,14 +42,15 @@ namespace GeekBurger.Users.Controllers
             }
             catch (Exception ex)
             {
+                await _serviceBus.SendLogAsync($"Não foi possível detectar a face do usuário enviado! ex: {ex}");
                 return BadRequest();
             }   
         }
 
         [HttpPost("foodRestrictions")]
         [ProducesResponseType(200)]
-        [ProducesResponseType(500)]
-        public IActionResult Post([FromBody] UserFoodRestriction request)
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> PostAsync([FromBody] UserFoodRestriction request)
         {
            
             try
@@ -50,9 +58,10 @@ namespace GeekBurger.Users.Controllers
                 _userService.SaveUserRestriction(Guid.Parse(request.UserId), request.Restrictions, request.Other);
                 return Ok();
             }
-            catch
+            catch(Exception ex)
             {
-                return StatusCode(400);
+                await _serviceBus.SendLogAsync($"Não foi possível armazenar as retrisções para o usuário \"{request.UserId}\" ex: {ex}");
+                return BadRequest();
             }
             
         }

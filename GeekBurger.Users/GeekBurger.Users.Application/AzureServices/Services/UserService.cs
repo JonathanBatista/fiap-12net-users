@@ -1,4 +1,5 @@
-﻿using GeekBurger.Users.Contract;
+﻿using GeekBurger.Users.Application.AzureServices.AzureConnections;
+using GeekBurger.Users.Contract;
 using GeekBurger.Users.Core.Configs;
 using GeekBurger.Users.Core.Domains;
 using GeekBurger.Users.Data;
@@ -16,6 +17,7 @@ namespace GeekBurger.Users.Application.AzureServices.Services
     {
         private readonly IServiceBus _serviceBus;
         private readonly IUserRepository _userRepository;
+        private AzureServiceBus azureServiceBus;
 
         public UserService(IServiceBus serviceBus, IUserRepository userRepository)
         {
@@ -23,13 +25,13 @@ namespace GeekBurger.Users.Application.AzureServices.Services
             _userRepository = userRepository;
         }
 
-        public void SaveUserRestriction(Guid userId, List<string> restrictions, string other)
+        public async void SaveUserRestriction(Guid userId, List<string> restrictions, string other)
         {
             var user = _userRepository.GetUser(u => u.UserId == userId).Result;
             var outros = other.Split(",");
             restrictions.AddRange(outros);
-
-            foreach(var restriction in restrictions)
+            await _serviceBus.SendLogAsync($"Salvando as restrições do user \"{userId.ToString()}\"  !!!");
+            foreach (var restriction in restrictions)
             {
                 var userRestriction = new UserRestriction(user);
                 userRestriction.Ingredient = restriction.Trim();
@@ -37,6 +39,7 @@ namespace GeekBurger.Users.Application.AzureServices.Services
 
                 _userRepository.InserFoodRestriction(userRestriction);
             }
+
         }
 
         public async Task UserRetrieved(User user)
@@ -46,7 +49,8 @@ namespace GeekBurger.Users.Application.AzureServices.Services
                 AreRestrictionsSet = user.Restrictions.Any(),
                 UserId = user.UserId.ToString()
             });
-            await _serviceBus.SendMessageAsync("log", message);
+
+            await _serviceBus.SendLogAsync($"Enviando User \"{user.UserId.ToString()}\" para a fila");
             await _serviceBus.SendMessageAsync(ConfigurationManager.Configuration["appSettings:sbUserRetrived"], message);
 
         }

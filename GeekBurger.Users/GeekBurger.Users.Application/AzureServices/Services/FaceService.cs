@@ -18,10 +18,14 @@ namespace GeekBurger.Users.Application.AzureServices.Services
         private readonly IUserRepository _userRepository;
         private List<User> _detectedUsers;
         private List<Task> _taskExceptions;
+        private IServiceBus _serviceBus;
         private Task _lastTask;
 
 
-        public FaceService(IUserService userService, IUserRepository userRepository)
+        public FaceService(
+            IUserService userService, 
+            IUserRepository userRepository,
+            IServiceBus serviceBus)
         {
             _faceListId = ConfigurationManager.Configuration["azureConfig:faceListId"];
             _faceServiceClient = new FaceServiceClient(ConfigurationManager.Configuration["azureConfig:key1"], ConfigurationManager.Configuration["azureConfig:endpoint"]);
@@ -29,6 +33,7 @@ namespace GeekBurger.Users.Application.AzureServices.Services
             _userService = userService;
             _userRepository = userRepository;
             _taskExceptions = new List<Task>();
+            _serviceBus = serviceBus;
         }
 
         public async Task<User> DetectFaceAsync(string face)
@@ -51,6 +56,7 @@ namespace GeekBurger.Users.Application.AzureServices.Services
                     _detectedUsers.Add(user);
                     _userRepository.InsertUser(user);
 
+                    await _serviceBus.SendLogAsync($"User \"{user.UserId.ToString()}\" detectado");
                     Task.Factory.StartNew(() => FindSimilarsAsync());
                     
                     streamFace.Flush();
@@ -60,8 +66,7 @@ namespace GeekBurger.Users.Application.AzureServices.Services
             }
             catch (Exception ex)
             {
-                //log
-
+                SendLog($"Erro ao detectar a face {ex}");
                 return user;
             }
         }
@@ -88,15 +93,20 @@ namespace GeekBurger.Users.Application.AzureServices.Services
 
                     if (containsAnyFaceOnList)
                     {
+                        SendLog($"Buscando similaridades do user \"{user.UserId.ToString()}\"");
                         var similarsFaces = await _faceServiceClient.FindSimilarAsync(user.UserId, _faceListId, 20);
 
                         var referenceFace = similarsFaces.FirstOrDefault(x => x.Confidence >= 0.5);
 
                         if (referenceFace == null)
+                        {
+                            SendLog($"Novo User detectado - \"{user.UserId.ToString()}\" ");
                             user.PersistedId = await AddUserToFaceListAsync(user.FaceBase64);
+                        }
                         else
                         {
                             userRetrived = await GetUserByPersistedId(referenceFace.PersistedFaceId);
+                            SendLog($"Similaridade encontrada de User - \"{user.UserId.ToString()}\" para User já existente {userRetrived.UserId.ToString()} ");
                             user.GuidReference = userRetrived.UserId.ToString();
                             user.Restrictions = userRetrived.Restrictions;
                         }
@@ -142,6 +152,7 @@ namespace GeekBurger.Users.Application.AzureServices.Services
         {
             if (!currentTask.IsCompletedSuccessfully && currentTask.Exception != null)
             {
+                SendLog($"Task incompleta: {currentTask.Exception}");
                 _taskExceptions.Add(currentTask);
                 return false;
             }
@@ -150,10 +161,9 @@ namespace GeekBurger.Users.Application.AzureServices.Services
         }
 
 
-        private async Task<User> GetUserByPersistedId(Guid persistedGuid)
-        {
-            return await _userRepository.GetUser(x => x.PersistedId == persistedGuid);
-        }
+        private async Task<User> GetUserByPersistedId(Guid persistedGuid) => await _userRepository.GetUser(x => x.PersistedId == persistedGuid);
+
+        private async void SendLog(string message) => await _serviceBus.SendLogAsync(message);
 
     }
 }

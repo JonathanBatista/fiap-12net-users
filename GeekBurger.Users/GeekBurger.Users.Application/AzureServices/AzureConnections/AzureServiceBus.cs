@@ -5,9 +5,11 @@ using Microsoft.Azure.Management.ServiceBus.Fluent;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.ServiceBus.Core;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -35,6 +37,22 @@ namespace GeekBurger.Users.Application.AzureServices.AzureConnections
             var serviceBusManager = ServiceBusManager.Authenticate(credentials, config.SubscriptionId);
 
             _serviceBusNamespace = serviceBusManager.Namespaces.GetByResourceGroup(config.ResourceGroup, config.NamespaceName);
+        }
+
+        public async Task SendLogAsync(string logMessage)
+        {
+            var logMessageByteArray = Encoding.UTF8.GetBytes($"{logMessage} - {DateTime.Now}");
+
+            var message = new Message
+            {
+                MessageId = Guid.NewGuid().ToString(),
+                Body = logMessageByteArray,
+                Label = "Users"
+            };
+
+            var logTopic = ConfigurationManager.Configuration["appSettings:sbLog"];
+
+            await SendMessageAsync(logTopic, message);
         }
 
         public async Task SendMessageAsync(string topicName, Message message)
