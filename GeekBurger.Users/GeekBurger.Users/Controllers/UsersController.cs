@@ -14,11 +14,12 @@ namespace GeekBurger.Users.Controllers
     {
         private readonly IFaceService _faceService;
         private readonly IMapper _mapper;
-
-        public UsersController(IFaceService faceService, IMapper mapper)
+        private readonly IUserService _userService;
+        public UsersController(IFaceService faceService, IMapper mapper, IUserService userService)
         {
             _faceService = faceService;
             _mapper = mapper;
+            _userService = userService;
         }
         
         [HttpPost]
@@ -29,9 +30,7 @@ namespace GeekBurger.Users.Controllers
             try
             {
                 var user = await _faceService.DetectFaceAsync(request.Face);
-
                 var response = _mapper.Map<UserProcess>(user);
-
                 return Ok(response);
             }
             catch (Exception ex)
@@ -45,17 +44,10 @@ namespace GeekBurger.Users.Controllers
         [ProducesResponseType(500)]
         public IActionResult Post([FromBody] UserFoodRestriction request)
         {
-            UserRepository repo = new UserRepository();
-
-            var restriction = new Core.Domains.UserRestriction();
-            restriction.User.UserId = Guid.Parse(request.UserId);
-            restriction.Ingredient = request.Restrictions;
-
-
-
+           
             try
             {
-                repo.InserFoodRestriction(restriction);
+                _userService.SaveUserRestriction(Guid.Parse(request.UserId), request.Restrictions, request.Other);
                 return Ok();
             }
             catch

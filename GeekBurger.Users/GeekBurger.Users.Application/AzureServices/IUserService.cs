@@ -9,6 +9,6 @@ namespace GeekBurger.Users.Application.AzureServices
     {
         Task UserRetrieved(User user);
 
-        Task SaveUserRestriction(Guid userId, List<string> restrictions, string other);
+        void SaveUserRestriction(Guid userId, List<string> restrictions, string other);
     }
 }
