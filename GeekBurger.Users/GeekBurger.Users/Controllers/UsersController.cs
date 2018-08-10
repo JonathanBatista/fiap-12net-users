@@ -50,6 +50,9 @@ namespace GeekBurger.Users.Controllers
             var restriction = new Core.Domains.UserRestriction();
             restriction.User.UserId = Guid.Parse(request.UserId);
             restriction.Ingredient = request.Restrictions;
+
+
+
             try
             {
                 repo.InserFoodRestriction(restriction);
