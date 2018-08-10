@@ -26,8 +26,9 @@ namespace GeekBurger.Users.Application.AzureServices.Services
                 AreRestrictionsSet = user.Restrictions.Any(),
                 UserId = user.UserId.ToString()
             });
-
+            await _serviceBus.SendMessageAsync("log", message);
             await _serviceBus.SendMessageAsync(ConfigurationManager.Configuration["appSettings:sbUserRetrived"], message);
+
         }
 
         private Message GetMessage(UserRetrieved userRetrieved)

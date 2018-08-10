@@ -4,6 +4,7 @@ using GeekBurger.Users.Core.Domains;
 using GeekBurger.Users.Data;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using Xunit;
 
 namespace GeekBurger.Data.Tests
@@ -21,11 +22,13 @@ namespace GeekBurger.Data.Tests
         public void ServiceBusTest()
         {
             var userService = new UserService(new AzureServiceBus());
+          
 
-            userService.UserRetrieved(new User
-            {
-                UserId = Guid.NewGuid(),
-                Restrictions = new List<UserRestriction>
+            var user =
+           new User
+           {
+               UserId = Guid.NewGuid(),
+               Restrictions = new List<UserRestriction>
                 {
                     new UserRestriction
                     {
@@ -33,7 +36,10 @@ namespace GeekBurger.Data.Tests
                         UserId = 1
                     }
                 }
-            });
+           };
+            
+            userService.UserRetrieved(user);
+         
         }
     }
 }
