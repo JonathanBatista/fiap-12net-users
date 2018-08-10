@@ -1,8 +1,10 @@
-﻿namespace GeekBurger.Users.Contract
+﻿using System.Collections.Generic;
+
+namespace GeekBurger.Users.Contract
 {
     public class UserFoodRestriction
     {
-        public string Restrictions { get; set; }
+        public List<string> Restrictions { get; set; }
 
         public string Other { get; set; }
 

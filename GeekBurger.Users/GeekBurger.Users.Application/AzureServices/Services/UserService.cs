@@ -4,6 +4,7 @@ using GeekBurger.Users.Core.Domains;
 using Microsoft.Azure.ServiceBus;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,11 @@ namespace GeekBurger.Users.Application.AzureServices.Services
         public UserService(IServiceBus serviceBus)
         {
             _serviceBus = serviceBus;
+        }
+
+        public Task SaveUserRestriction(Guid userId, List<string> restrictions, string other)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task UserRetrieved(User user)
